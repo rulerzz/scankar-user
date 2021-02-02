@@ -1,0 +1,25 @@
+<div class="pt-4 pb-2 title d-flex align-items-center">
+  <h5 class="m-0">Browse Items for {{selectedCategory.name}}</h5>
+</div>
+<div class="trending-slider">
+<overflow-carousel>
+ 
+  <button mat-fab style="background:#d92662" slide-left-button>
+    <mat-icon>navigate_before</mat-icon>
+  </button>
+ 
+  <carousel-item *ngFor="let item of selectedCategory.items" class="image-card" (click)="addItem(item)">
+    <div class="list-card-body" style="background-image: url('{{item.image}}');background-size: cover;">
+            <h6 class="name">
+            {{ item.name }}
+            </h6>
+          </div>
+  </carousel-item>
+ 
+  <button mat-fab style="background:#d92662" slide-right-button>
+    <mat-icon>navigate_next</mat-icon>
+  </button>
+ 
+</overflow-carousel>
+<ng-lottie *ngIf="show" height="500" width="100%" [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
+</div>

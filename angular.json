@@ -24,9 +24,23 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "./node_modules/font-awesome/css/font-awesome.css",
+              "src/styles.css",
+              "src/assets/vendor/slick/slick.min.css",
+              "src/assets/vendor/slick/slick-theme.min.css",
+              "src/assets/vendor/icons/feather.css",
+              "src/assets/vendor/bootstrap/css/bootstrap.min.css",
+              "src/assets/css/style.css",
+              "src/assets/vendor/sidebar/demo.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/vendor/jquery/jquery.min.js",
+              "src/assets/vendor/bootstrap/js/bootstrap.bundle.min.js",
+              "src/assets/vendor/slick/slick.min.js",
+              "src/assets/vendor/sidebar/hc-offcanvas-nav.js",
+              "src/assets/js/osahan.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -87,6 +101,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -120,5 +135,8 @@
       }
     }
   },
-  "defaultProject": "user"
+  "defaultProject": "user",
+  "cli": {
+    "analytics": false
+  }
 }

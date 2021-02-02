@@ -1,0 +1,10 @@
+.osahan-slider-item{
+    max-width:200px;
+    display: inline-block;
+    margin-right:10px;
+}
+.holder{
+    cursor: grab;
+    overflow: auto;
+     white-space: nowrap;
+}

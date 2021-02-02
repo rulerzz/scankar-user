@@ -1,0 +1,66 @@
+<div class="pt-4 pb-2 title d-flex align-items-center">
+  <h5 class="m-0">Browse Categories</h5>
+</div>
+<!-- slider -->
+<div class="trending-slider">
+ <!-- <carousel [loop]="true">
+    <div class="carousel-cell" *ngFor="let category of ruser.categories">
+        <img [src]="category.image">
+        <div class="list-card-body">
+            <h6 class="name">
+              <a class="text-black">{{ category.name }} </a>
+            </h6>
+            <p class="cuisine">{{ category.cuisine}}</p>
+          </div>
+    </div>
+</carousel>-->
+<overflow-carousel>
+ 
+  <button mat-fab style="background:#d92662" slide-left-button>
+    <mat-icon>navigate_before</mat-icon>
+  </button>
+ 
+  <carousel-item *ngFor="let category of ruser.categories" class="image-card" (click)="showItems(category)">
+    <div class="list-card-body" style="background-image: url('{{category.image}}');background-size: cover;">
+            <h6 class="name">
+            {{ category.name }}
+            </h6>
+          </div>
+  </carousel-item>
+ 
+  <button mat-fab style="background:#d92662" slide-right-button>
+    <mat-icon>navigate_next</mat-icon>
+  </button>
+ 
+</overflow-carousel>
+ <ng-lottie *ngIf="show" height="500" width="100%" [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
+  <!--<div class="container holder">
+    <div
+      class="osahan-slider-item"
+      *ngFor="let category of ruser.categories"
+      (click)="showItems(category)"
+    >
+      <div
+        class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm"
+      >
+        <div class="list-card-image">
+          <a>
+            <img
+              [src]="category.image"
+              style="width: 200px; height: 200px"
+              class="img-fluid item-img"
+            />
+          </a>
+        </div>
+        <div class="p-3 position-relative">
+          <div class="list-card-body">
+            <h6 class="mb-1">
+              <a class="text-black">{{ category.name }} </a>
+            </h6>
+            <p class="text-gray mb-3">{{ category.cuisine}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>-->
+</div>
