@@ -75,6 +75,7 @@ export class CategoriesComponent implements OnInit {
   }
   showItems(category: any) {
     localStorage.setItem('selectedCategory', JSON.stringify(category));
+    localStorage.setItem('categories', JSON.stringify(this.ruser.categories));
     this.router.navigate(['dashboard/items']);
   }
 }

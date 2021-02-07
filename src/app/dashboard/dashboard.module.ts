@@ -4,7 +4,6 @@ import { DashboardComponent } from './dashboard.component';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardService } from './dashboard.service';
 import { BookComponent } from './book/book.component';
-import { ItemlistComponent } from './itemlist/itemlist.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { ItemsComponent } from './items/items.component';
 import { CartComponent } from '../cart/cart.component';
@@ -14,6 +13,9 @@ import { OverflowCarouselModule } from '@nghacks/overflow-carousel';
 import player from 'lottie-web';
 import { LottieModule } from 'ngx-lottie';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { OffersComponent } from './offers/offers.component';
+import { CombosComponent } from './combos/combos.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export function playerFactory() {
   return import(/* webpackChunkName: 'lottie-web' */ 'lottie-web');
@@ -40,6 +42,18 @@ const routes: Routes = [
         path: 'cart',
         component: CartComponent,
       },
+      {
+        path: 'offers',
+        component: OffersComponent,
+      },
+      {
+        path: 'combos',
+        component: CombosComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      },
     ],
   },
 ];
@@ -48,9 +62,11 @@ const routes: Routes = [
   declarations: [
     DashboardComponent,
     BookComponent,
-    ItemlistComponent,
     CategoriesComponent,
     ItemsComponent,
+    OffersComponent,
+    CombosComponent,
+    ProfileComponent,
   ],
   providers: [DashboardService],
   imports: [
@@ -64,7 +80,6 @@ const routes: Routes = [
   exports: [
     DashboardComponent,
     BookComponent,
-    ItemlistComponent,
     CategoriesComponent,
     ItemsComponent,
   ],

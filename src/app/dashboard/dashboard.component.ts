@@ -16,8 +16,6 @@ export class DashboardComponent implements OnInit {
   config: any;
   user: any;
   ruser: any;
-  photo:any;
-  firstName:any;
   constructor(
     private route: ActivatedRoute,
     private dashboardservice: DashboardService,
@@ -26,14 +24,28 @@ export class DashboardComponent implements OnInit {
     private router: Router
   ) {
     this.config = config;
+    this.dashboardservice.events$.forEach((event) => {
+      if(event){
+        this.ngOnInit();
+      }
+    });
   }
 
   ngOnInit(): void {
-    this.photo = localStorage.getItem('photo');
-    this.firstName = localStorage.getItem('firstName');
+    this.appservice.load();
+    this.dashboardservice.getUser(localStorage.getItem('id')).subscribe(
+      (data) => {
+        this.appservice.unload();
+        this.user = data.body.data.user;
+      },
+      (err) => {
+        this.appservice.unload();
+        this.appservice.alert('Could not fetch account data!', '');
+      }
+    );
     this.showcategories();
   }
-  
+
   showcategories() {
     this.router.navigate(['dashboard/categories']);
   }
@@ -46,5 +58,17 @@ export class DashboardComponent implements OnInit {
   logout() {
     localStorage.clear();
     this.router.navigate(['']);
+  }
+  goHome() {
+    this.router.navigate(['dashboard/categories']);
+  }
+  showCombos() {
+    this.router.navigate(['dashboard/combos']);
+  }
+  showOffers() {
+    this.router.navigate(['dashboard/offers']);
+  }
+  showProfile() {
+    this.router.navigate(['dashboard/profile']);
   }
 }

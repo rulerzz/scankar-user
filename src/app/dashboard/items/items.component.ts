@@ -14,6 +14,7 @@ import { AnimationOptions } from 'ngx-lottie';
 export class ItemsComponent implements OnInit {
   selectedCategory: any;
   show: boolean;
+  categories: any;
   constructor(
     private dashboardservice: DashboardService,
     private appservice: AppService,
@@ -23,23 +24,21 @@ export class ItemsComponent implements OnInit {
     this.selectedCategory = JSON.parse(
       localStorage.getItem('selectedCategory')
     );
+    this.categories = JSON.parse(localStorage.getItem('categories'));
     this.show = false;
   }
 
   ngOnInit(): void {
-     if (
-       this.selectedCategory.items == undefined ||
-       this.selectedCategory.items == null ||
-       this.selectedCategory.items.length == 0
-     ) {
-       this.show = true;
-     }
+    if (
+      this.selectedCategory.items == undefined ||
+      this.selectedCategory.items == null ||
+      this.selectedCategory.items.length == 0
+    ) {
+      this.show = true;
+    }
   }
   options: AnimationOptions = {
-    path: '../../../assets/empty1.json',
-  };
-  options2: AnimationOptions = {
-    path: '../../../assets/empty3.json',
+    path: '../../../assets/empty.json',
   };
   animationCreated(animationItem: AnimationItem): void {
     console.log(animationItem);
@@ -55,5 +54,14 @@ export class ItemsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {});
+  }
+  showItems(category){
+    this.selectedCategory = category;
+    if(this.selectedCategory.items.length == 0){
+      this.show = true;
+    }
+    else{
+      this.show = false;
+    }
   }
 }

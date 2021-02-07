@@ -34,8 +34,8 @@ export class CartComponent implements OnInit {
     this.orderType = localStorage.getItem('orderType');
     this.tableNo = localStorage.getItem('tableNo');
     this.total = 0;
-    this.address = '';
-    this.instruction = '';
+    this.address = "";
+    this.instruction = "";
   }
 
   ngOnInit(): void {
@@ -49,16 +49,17 @@ export class CartComponent implements OnInit {
       },
       (err) => {
         this.appservice.unload();
-        this.appservice.alert('Could not get categories!', '');
+        this.appservice.alerttop('Could not get categories!', '');
       }
     );
   }
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.cart = [];
     this.total = 0;
   }
   getPrice(item: any) {
-    return item.config.price;
+    if (item.config.hasOwnProperty('price')) return item.config.price;
+    else return item.price;
   }
   getAddonAmount(item: any) {
     let price = 0;
@@ -131,7 +132,7 @@ export class CartComponent implements OnInit {
       this.dashboardservice.getorderattable(this.tableNo).subscribe((data) => {
         if (data.body.data.length == 0) {
           if (this.tableNo == 0) {
-            this.appservice.alert('Please select a valid table!', '');
+            this.appservice.alerttop('Please select a valid table!', '');
           } else {
             this.appservice.load();
             let order = {
@@ -151,24 +152,26 @@ export class CartComponent implements OnInit {
             this.dashboardservice.completeorder(order).subscribe(
               (data) => {
                 this.appservice.unload();
-                this.appservice.alert('Order Placed!', '');
+                this.dashboardservice.setCart([]);
+                this.appservice.alerttop('Order Placed!', '');
                 this.router.navigate(['dashboard/categories']);
               },
               (err) => {
                 this.appservice.unload();
-                this.appservice.alert('Error completing order!', '');
+                this.appservice.alerttop('Error completing order!', '');
               }
             );
           }
         } else {
-          this.appservice.alert('This table already has an order running!', '');
+          this.appservice.alerttop('This table already has an order running!', '');
         }
       });
     } else if (this.orderType == 'Delivery') {
       // TAKE AWAY / DELIVERY
       this.tableNo = 0;
-      if (this.address == '') {
-        this.appservice.alert('Please enter address!', '');
+      if (this.address === "") {
+        console.log(this.address);
+        this.appservice.alerttop('Please enter address!', '');
       } else {
         this.appservice.load();
         let order = {
@@ -188,19 +191,20 @@ export class CartComponent implements OnInit {
         this.dashboardservice.completeorder(order).subscribe(
           (data) => {
             this.appservice.unload();
-            this.appservice.alert('Order Placed!', '');
+            this.dashboardservice.setCart([]);
+            this.appservice.alerttop('Order Placed!', '');
             this.router.navigate(['dashboard/categories']);
           },
           (err) => {
             this.appservice.unload();
-            this.appservice.alert('Error completing order!', '');
+            this.appservice.alerttop('Error completing order!', '');
           }
         );
       }
     } else if (this.orderType == 'Take Home') {
       this.tableNo = 0;
-      if (this.username == '') {
-        this.appservice.alert('Please enter user name!', '');
+      if (this.address === "") {
+        this.appservice.alerttop('Please enter address!', '');
       } else {
         this.appservice.load();
         let order = {
@@ -220,17 +224,18 @@ export class CartComponent implements OnInit {
         this.dashboardservice.completeorder(order).subscribe(
           (data) => {
             this.appservice.unload();
-            this.appservice.alert('Order Placed!', '');
+            this.dashboardservice.setCart([]);
+            this.appservice.alerttop('Order Placed!', '');
             this.router.navigate(['dashboard/categories']);
           },
           (err) => {
             this.appservice.unload();
-            this.appservice.alert('Error completing order!', '');
+            this.appservice.alerttop('Error completing order!', '');
           }
         );
       }
     } else {
-      this.appservice.alert('Please select order type!', '');
+      this.appservice.alerttop('Please select order type!', '');
     }
   }
   applydiscount() {

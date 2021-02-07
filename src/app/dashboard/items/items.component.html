@@ -1,17 +1,17 @@
 <div class="pt-4 pb-2 title d-flex align-items-center">
   <h5 class="m-0">Browse Items for {{selectedCategory.name}}</h5>
 </div>
-<div class="trending-slider">
+<div class="trending-slider" style="padding-bottom: 80px;">
 <overflow-carousel>
  
   <button mat-fab style="background:#d92662" slide-left-button>
     <mat-icon>navigate_before</mat-icon>
   </button>
  
-  <carousel-item *ngFor="let item of selectedCategory.items" class="image-card" (click)="addItem(item)">
-    <div class="list-card-body" style="background-image: url('{{item.image}}');background-size: cover;">
+  <carousel-item *ngFor="let category of categories" class="image-card" (click)="showItems(category)">
+    <div class="list-card-body" style="background-image: url('{{category.image}}');background-size: cover;">
             <h6 class="name">
-            {{ item.name }}
+            {{ category.name }}
             </h6>
           </div>
   </carousel-item>
@@ -21,5 +21,16 @@
   </button>
  
 </overflow-carousel>
+<div class="p-3 border-bottom menu-list" *ngFor="let item of selectedCategory.items">
+                                    <span class="float-right"><a (click)="addItem(item)" class="btn btn-outline-secondary btn-sm">ADD</a></span>
+                                    <div class="media">
+                                        <img [src]="item.image" class="mr-3 rounded-pill ">
+                                        <div class="media-body">
+                                            <h6 class="mb-1">{{ item.name }} </h6>
+                                            <span>{{item.description}}</span>
+                                            <p class="text-muted mb-0"><i class="fa fa-inr"></i>&nbsp;{{ item.price }}</p>
+                                        </div>
+                                    </div>
+                                </div>
 <ng-lottie *ngIf="show" height="500" width="100%" [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
 </div>

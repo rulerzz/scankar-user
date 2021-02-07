@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartComponent } from './cart.component';
 import { RouterModule, Routes } from '@angular/router';
+import { SharedModule } from '../shared.module';
 const routes: Routes = [
   {
     path: '',
@@ -12,6 +13,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [CartComponent],
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [CommonModule, SharedModule, RouterModule.forChild(routes)],
+  exports: [CartComponent]
 })
 export class CartModule {}

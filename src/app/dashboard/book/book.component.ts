@@ -18,13 +18,13 @@ export class BookComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-      this.data.item.quantity = 0;
-      this.data.item.config.forEach((con: any) => {
-        con.selected = false;
-      });
-      this.data.item.addons.forEach((add: any) => {
-        add.selected = false;
-      });
+    this.data.item.quantity = 0;
+    this.data.item.config.forEach((con: any) => {
+      con.selected = false;
+    });
+    this.data.item.addons.forEach((add: any) => {
+      add.selected = false;
+    });
   }
   close() {
     this.dialogRef.close();
@@ -51,43 +51,46 @@ export class BookComponent implements OnInit {
       if (element.selected) configcount++;
     });
     if (configcount > 1) {
-      this.appservice.alerttop(
-        'You can only select one configuration at a time!',
-        ''
-      );
-    } else if (configcount == 0) {
-      this.appservice.alerttop('You must select one configuration at least!', '');
+      this.appservice.alerttop('Cannot select more than one config!', '');
     } else if (item.quantity == 0) {
       this.appservice.alerttop('Please provide item quantity!', '');
     } else {
       // SEND TO CART
       let config: any,
         addons: any = [];
-      item.config.forEach((element: any) => {
-        if (element.selected)
-          config = {
-            id: element._id,
-            name: element.name,
-            price: element.price,
-          };
-      });
-      item.addons.forEach((element: any) => {
-        if (element.selected)
-          addons.push({
-            id: element._id,
-            name: element.name,
-            price: element.price,
-          });
-      });
       let data = {
         itemid: item._id,
         quantity: item.quantity,
-        config: config,
-        addons: addons,
         name: item.name,
+        config: {},
+        addons: [],
+        price: item.price,
       };
+      if (configcount > 0) {
+        item.config.forEach((element: any) => {
+          if (element.selected)
+            config = {
+              id: element._id,
+              name: element.name,
+              price: element.price,
+            };
+        });
+        data.config = config;
+      }
+      if (item.addons.length > 0) {
+        item.addons.forEach((element: any) => {
+          if (element.selected)
+            addons.push({
+              id: element._id,
+              name: element.name,
+              price: element.price,
+            });
+        });
+        data.addons = addons;
+      }
+
       this.dashboardservice.addToCart(data);
-      this.appservice.alerttop('Added item to cart!','');
+      this.appservice.alerttop('Added item to cart!', '');
       this.close();
     }
   }
