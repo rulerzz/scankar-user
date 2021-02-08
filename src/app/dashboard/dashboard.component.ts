@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
       (data) => {
         this.appservice.unload();
         this.user = data.body.data.user;
+        localStorage.setItem('firstName', this.user.firstName);
       },
       (err) => {
         this.appservice.unload();
