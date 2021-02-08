@@ -37,6 +37,6 @@ const routes: Routes = [
   declarations: [AuthComponent, LoginComponent, ForgotPasswordComponent, RegisterComponent],
   imports: [SharedModule, RouterModule.forChild(routes)],
   providers: [AuthService],
-  exports: [AuthComponent, LoginComponent, ForgotPasswordComponent],
+  exports: [AuthComponent, LoginComponent, ForgotPasswordComponent, RegisterComponent],
 })
 export class AuthModule {}
