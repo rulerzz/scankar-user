@@ -2,7 +2,7 @@
   <h5 class="m-0">Browse Items for {{selectedCategory.name}}</h5>
 </div>
 <div class="trending-slider" style="padding-bottom: 80px;">
-<overflow-carousel>
+<!--overflow-carousel>
  
   <button mat-fab style="background:#d92662" slide-left-button>
     <mat-icon>navigate_before</mat-icon>
@@ -20,7 +20,16 @@
     <mat-icon>navigate_next</mat-icon>
   </button>
  
-</overflow-carousel>
+</overflow-carousel-->
+ <drag-scroll>
+    <div drag-scroll-item class="panel image-card" *ngFor="let category of categories" (click)="showItems(category)">
+         <div class="list-card-body" style="background-image: url('{{category.image}}');background-size: cover;">
+            <h6 class="name">
+            {{ category.name }}
+            </h6>
+          </div>
+      </div>
+  </drag-scroll>
 <div class="p-3 border-bottom menu-list" *ngFor="let item of selectedCategory.items">
                                     <span class="float-right"><a (click)="addItem(item)" class="btn btn-outline-secondary btn-sm">ADD</a></span>
                                     <div class="media">

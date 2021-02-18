@@ -16,7 +16,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { OffersComponent } from './offers/offers.component';
 import { CombosComponent } from './combos/combos.component';
 import { ProfileComponent } from './profile/profile.component';
-
+import { NgxFlickingModule } from '@egjs/ngx-flicking';
+import { DragScrollModule } from 'ngx-drag-scroll';
 export function playerFactory() {
   return import(/* webpackChunkName: 'lottie-web' */ 'lottie-web');
 }
@@ -76,6 +77,8 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes),
     LottieModule.forRoot({ player: playerFactory }),
+    NgxFlickingModule,
+    DragScrollModule,
   ],
   exports: [
     DashboardComponent,

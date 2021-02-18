@@ -13,6 +13,9 @@ import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CartModule } from './cart/cart.module';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { config } from 'src/config/config';
+const configuration: SocketIoConfig = { url: config.socketUrl, options: {} };
 // Note we need a separate function as it's required
 // by the AOT compiler.
 export function playerFactory() {
@@ -31,6 +34,7 @@ export function playerFactory() {
     AuthModule,
     CartModule,
     LottieModule.forRoot({ player: playerFactory }),
+    SocketIoModule.forRoot(configuration),
   ],
   providers: [
     AppService,

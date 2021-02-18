@@ -108,9 +108,15 @@
       </div>
       <input
         type="text"
+        name="search"
         class="shadow-none border-0 form-control"
-        placeholder="Search for categories or dishes"
+        placeholder="Search for dishes"
+        [(ngModel)]="search"
+        (ngModelChange)="changed(search)"
       />
+      <div class="results" *ngIf="results.length > 0">
+        <div class="listitem" *ngFor="let item of results"><img [src]="item.image" *ngIf="item.image !== undefined"><p>{{item.name}}</p> <span class="float-right"><a (click)="addItem(item)" class="btn btn-outline-secondary btn-sm">ADD</a></span></div>
+      </div>
     </div>
   </div>
   <div class="container">
@@ -143,7 +149,9 @@
     <div class="col bg-white rounded-circle mt-n4 px-3 py-2">
       <div (click)="showcart()" class="bg-danger rounded-circle mt-n0 shadow">
         <a class="text-white small font-weight-bold text-decoration-none">
-          <i class="feather-shopping-cart"></i>
+          <i style="position: relative;
+    left: -9px;
+    top: 5px;" class="feather-shopping-cart"></i>
         </a>
       </div>
     </div>

@@ -10,20 +10,19 @@ export class DashboardService {
   private usersubject = new Subject<boolean>();
   bill: any;
   category: any;
-  user:any;
-  ruser:any;
-  constructor(private http: HttpClient) {
-  }
-  setUser(user:any){
+  user: any;
+  ruser: any;
+  constructor(private http: HttpClient) {}
+  setUser(user: any) {
     this.user = user;
   }
-  getUsers(){
+  getUsers() {
     return this.user;
   }
-  setRuser(ruser:any){
+  setRuser(ruser: any) {
     this.ruser = ruser;
   }
-  getRuser(){
+  getRuser() {
     return this.ruser;
   }
   setCart(cart: any) {
@@ -36,17 +35,15 @@ export class DashboardService {
     this.category = category;
   }
   getCart() {
-    let json =  JSON.parse(localStorage.getItem('cart'));
-    if(json === null){
+    let json = JSON.parse(localStorage.getItem('cart'));
+    if (json === null) {
       return [];
-    }
-    else
-    return json;
+    } else return json;
   }
   addToCart(order: any) {
     let json = localStorage.getItem('cart');
     let cart = JSON.parse(json);
-    if(cart === null){
+    if (cart === null) {
       cart = [];
     }
     cart.push(order);
@@ -211,6 +208,7 @@ export class DashboardService {
     });
   }
   completeorder(order: any): Observable<any> {
+    //order.socketid = localStorage.getItem('socketid');
     return this.http.post<any>(
       config.serverUrl + 'customer-order/completeorder',
       order,
@@ -223,6 +221,16 @@ export class DashboardService {
     return this.http.post<any>(
       config.serverUrl + 'customer-order/checktable',
       { tableno: tableno, user: localStorage.getItem('rid') },
+      {
+        observe: 'response',
+      }
+    );
+  }
+  search(name: any): Observable<any> {
+    return this.http.get<any>(
+      config.serverUrl +
+        'customer-order/searchitems/' +
+        localStorage.getItem('rid') + '/' + name,
       {
         observe: 'response',
       }

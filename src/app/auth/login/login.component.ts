@@ -32,8 +32,6 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.appservice.load();
-    let validateemail = EmailValidator.validate(this.username.value);
-    if (validateemail) {
       this.authservice
         .login({ email: this.username.value, password: this.password.value })
         .subscribe(
@@ -61,12 +59,9 @@ export class LoginComponent implements OnInit {
           },
           (err) => {
             this.appservice.unload();
+            this.appservice.alert(err.error.message,"");
           }
         );
-    } else {
-      this.appservice.unload();
-      this.appservice.alert('Please enter a valid email!', '');
-    }
   }
   forget() {
     this.router.navigate(['forgotpassword']);

@@ -34,8 +34,8 @@ export class CartComponent implements OnInit {
     this.orderType = localStorage.getItem('orderType');
     this.tableNo = localStorage.getItem('tableNo');
     this.total = 0;
-    this.address = "";
-    this.instruction = "";
+    this.address = '';
+    this.instruction = '';
   }
 
   ngOnInit(): void {
@@ -163,13 +163,16 @@ export class CartComponent implements OnInit {
             );
           }
         } else {
-          this.appservice.alerttop('This table already has an order running!', '');
+          this.appservice.alerttop(
+            'This table already has an order running!',
+            ''
+          );
         }
       });
     } else if (this.orderType == 'Delivery') {
       // TAKE AWAY / DELIVERY
       this.tableNo = 0;
-      if (this.address === "") {
+      if (this.address === '') {
         console.log(this.address);
         this.appservice.alerttop('Please enter address!', '');
       } else {
@@ -203,7 +206,7 @@ export class CartComponent implements OnInit {
       }
     } else if (this.orderType == 'Take Home') {
       this.tableNo = 0;
-      if (this.address === "") {
+      if (this.address === '') {
         this.appservice.alerttop('Please enter address!', '');
       } else {
         this.appservice.load();
@@ -246,5 +249,20 @@ export class CartComponent implements OnInit {
     this.discount = 0;
     this.getTotalCost();
     this.addedDiscount = false;
+  }
+  decrease(item: any) {
+    if (item.quantity != 0) {item.quantity--;
+    this.dashboardservice.setCart(this.cart);
+    }
+  }
+  increase(item: any) {
+    item.quantity++;
+    this.dashboardservice.setCart(this.cart);
+  }
+  delete(item:any){
+    console.log(item);
+    let index = this.cart.findIndex( (obj) => obj.itemid == item.itemid);
+    this.cart.splice(index,1);
+    this.dashboardservice.setCart(this.cart);
   }
 }

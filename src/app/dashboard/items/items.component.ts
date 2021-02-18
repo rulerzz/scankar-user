@@ -46,7 +46,6 @@ export class ItemsComponent implements OnInit {
   addItem(item: any) {
     const dialogRef = this.dialog.open(BookComponent, {
       width: '350px',
-      height: '450px',
       data: {
         item: item,
         selectedCategory: this.selectedCategory,

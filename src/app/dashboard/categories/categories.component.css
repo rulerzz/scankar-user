@@ -30,3 +30,6 @@
 button{
     outline:none;
 }
+.drag-scroll-content {
+  overflow: hidden !important;
+}

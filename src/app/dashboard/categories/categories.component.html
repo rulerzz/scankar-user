@@ -3,6 +3,15 @@
 </div>
 <!-- slider -->
 <div class="trending-slider">
+  <drag-scroll>
+    <div drag-scroll-item class="panel image-card" *ngFor="let category of ruser.categories" (click)="showItems(category)">
+         <div class="list-card-body" style="background-image: url('{{category.image}}');background-size: cover;">
+            <h6 class="name">
+            {{ category.name }}
+            </h6>
+          </div>
+      </div>
+  </drag-scroll>
  <!-- <carousel [loop]="true">
     <div class="carousel-cell" *ngFor="let category of ruser.categories">
         <img [src]="category.image">
@@ -14,7 +23,21 @@
           </div>
     </div>
 </carousel>-->
-<overflow-carousel>
+ <!--ngx-flicking
+    class="flicking flicking0"
+    [options]="{ gap: 10, circular: true, moveType: 'freeScroll' }"
+  >
+    <ng-template>
+      <div class="panel image-card" *ngFor="let category of ruser.categories" (click)="showItems(category)">
+         <div class="list-card-body" style="background-image: url('{{category.image}}');background-size: cover;">
+            <h6 class="name">
+            {{ category.name }}
+            </h6>
+          </div>
+      </div>
+    </ng-template>
+  </ngx-flicking-->
+<!--overflow-carousel>
  
   <button mat-fab style="background:#d92662" slide-left-button>
     <mat-icon>navigate_before</mat-icon>
@@ -32,7 +55,7 @@
     <mat-icon>navigate_next</mat-icon>
   </button>
  
-</overflow-carousel>
+</overflow-carousel -->
  <ng-lottie *ngIf="show" height="500" width="100%" [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
   <!--<div class="container holder">
     <div
