@@ -23,10 +23,13 @@ export class CartComponent implements OnInit {
   instruction: any;
   address: any;
   user: any;
+  orderid: any;
+  orderToEdit: any;
   constructor(
     private dashboardservice: DashboardService,
     private appservice: AppService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.cart = [];
     this.username = localStorage.getItem('firstName');
@@ -36,6 +39,10 @@ export class CartComponent implements OnInit {
     this.total = 0;
     this.address = '';
     this.instruction = '';
+    this.orderid = this.route.snapshot.paramMap.get('id');
+    this.dashboardservice.setcartevent$.forEach((event) => {
+      this.initcart();
+    });
   }
 
   ngOnInit(): void {
@@ -44,8 +51,7 @@ export class CartComponent implements OnInit {
       (data) => {
         this.appservice.unload();
         this.user = data.body.data.user[0];
-        this.cart = this.dashboardservice.getCart();
-        this.getTotalCost();
+        this.initcart();
       },
       (err) => {
         this.appservice.unload();
@@ -57,9 +63,22 @@ export class CartComponent implements OnInit {
     this.cart = [];
     this.total = 0;
   }
+  initcart(){
+       this.cart = this.dashboardservice.getCart();
+       this.orderToEdit = JSON.parse(localStorage.getItem('orderToEdit'));
+       this.getTotalCost();
+       if(this.orderToEdit !== null){
+         this.address = this.orderToEdit.address;
+       }
+  }
   getPrice(item: any) {
-    if (item.config.hasOwnProperty('price')) return item.config.price;
+    if (item.hasOwnProperty('config') && item.config.hasOwnProperty('price'))
+      return item.config.price;
     else return item.price;
+  }
+  getName(item: any) {
+    if (item.hasOwnProperty('config')) return item.config.name;
+    else return 'Initial';
   }
   getAddonAmount(item: any) {
     let price = 0;
@@ -137,6 +156,7 @@ export class CartComponent implements OnInit {
             this.appservice.load();
             let order = {
               items: this.cart,
+              userId: localStorage.getItem('id'),
               discount: this.discount,
               price: this.total,
               booker: this.username,
@@ -184,6 +204,7 @@ export class CartComponent implements OnInit {
           booker: this.username,
           tableNo: this.tableNo,
           user: localStorage.getItem('rid'),
+          userId: localStorage.getItem('id'),
           placed_time: new Date().toString(),
           status: 'Placed',
           process: 'Pending',
@@ -206,9 +227,6 @@ export class CartComponent implements OnInit {
       }
     } else if (this.orderType == 'Take Home') {
       this.tableNo = 0;
-      if (this.address === '') {
-        this.appservice.alerttop('Please enter address!', '');
-      } else {
         this.appservice.load();
         let order = {
           discount: this.discount,
@@ -218,6 +236,7 @@ export class CartComponent implements OnInit {
           tableNo: this.tableNo,
           user: localStorage.getItem('rid'),
           placed_time: new Date().toString(),
+          userId: localStorage.getItem('id'),
           status: 'Placed',
           process: 'Pending',
           instruction: this.instruction,
@@ -236,10 +255,23 @@ export class CartComponent implements OnInit {
             this.appservice.alerttop('Error completing order!', '');
           }
         );
-      }
     } else {
       this.appservice.alerttop('Please select order type!', '');
     }
+  }
+  update(){
+    this.orderToEdit.items = this.cart;
+    this.orderToEdit.price = this.total;
+    this.orderToEdit.address = this.address;
+    this.dashboardservice.UpdateOrder(this.orderToEdit).subscribe((data) => {
+      this.cart = [];
+      this.dashboardservice.setCart([]);
+      localStorage.removeItem('orderToEdit');
+      this.appservice.alerttop('Updated order successfully!', '');
+      this.router.navigate(['dashboard/categories']);
+    }, (err) => {
+      this.appservice.alerttop('Could not update order!', '');
+    });
   }
   applydiscount() {
     this.total = (this.total - this.discount).toFixed(2);
@@ -251,18 +283,22 @@ export class CartComponent implements OnInit {
     this.addedDiscount = false;
   }
   decrease(item: any) {
-    if (item.quantity != 0) {item.quantity--;
-    this.dashboardservice.setCart(this.cart);
+    if (item.quantity != 0) {
+      item.quantity--;
+      this.dashboardservice.setCart(this.cart);
+      this.getTotalCost();
     }
   }
   increase(item: any) {
     item.quantity++;
     this.dashboardservice.setCart(this.cart);
+    this.getTotalCost();
   }
-  delete(item:any){
+  delete(item: any) {
     console.log(item);
-    let index = this.cart.findIndex( (obj) => obj.itemid == item.itemid);
-    this.cart.splice(index,1);
+    let index = this.cart.findIndex((obj) => obj.itemid == item.itemid);
+    this.cart.splice(index, 1);
     this.dashboardservice.setCart(this.cart);
+    this.getTotalCost();
   }
 }

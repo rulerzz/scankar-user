@@ -1,0 +1,13 @@
+<div class="position" matRipple
+     [matRippleCentered]="true"
+     [matRippleUnbounded]="true"
+     [matRippleRadius]="50" *ngIf="orderType === 'Dine In'">
+  <button
+    mat-fab
+    color="warn"
+    aria-label="Example icon button with a home icon"
+    (click)="makeabellcall()"
+  >
+    <mat-icon>notifications_active</mat-icon>
+  </button>
+</div>

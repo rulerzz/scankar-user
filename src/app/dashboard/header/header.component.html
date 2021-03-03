@@ -1,0 +1,83 @@
+<header class="section-header">
+  <section class="header-main shadow-sm bg-white">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-1">
+          <a class="brand-wrap mb-0">
+            <img class="img-fluid" [src]="config.appLogo" />
+          </a>
+          <!-- brand-wrap.// -->
+        </div>
+        <!-- col.// -->
+        <div class="col-11">
+          <div class="d-flex align-items-center justify-content-end pr-5">
+            <!-- search -->
+            <a class="widget-header mr-4 text-dark">
+              <div class="icon d-flex align-items-center">
+                <i class="feather-search h6 mr-2 mb-0"></i> <span>Search</span>
+              </div>
+            </a>
+            <!-- offers -->
+            <a class="widget-header mr-4 text-white btn bg-primary m-none" routerLink="orders">
+              <div class="icon d-flex align-items-center">
+                <i class="feather-disc h6 mr-2 mb-0"></i> <span>Orders</span>
+              </div>
+            </a>
+            <!-- my account -->
+            <div class="dropdown mr-4 m-none">
+              <a
+                class="dropdown-toggle text-dark py-3 d-block"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <img
+                  src="../../assets/img/default.jpg"
+                  *ngIf="!checkphoto()"
+                  class="img-fluid rounded-circle header-user mr-2 header-user"
+                />
+                <img
+                *ngIf="checkphoto()"
+                  [src]="user.photo"
+                  class="img-fluid rounded-circle header-user mr-2 header-user"
+                />
+                Hi {{ getName() }}
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-right"
+                aria-labelledby="dropdownMenuButton"
+              >
+                <a class="dropdown-item" (click)="showProfile()">My account</a>
+                <a class="dropdown-item">Delivery support</a>
+                <a class="dropdown-item">Contant us</a>
+                <a class="dropdown-item">Term of use</a>
+                <a class="dropdown-item">Privacy policy</a>
+                <a class="dropdown-item" (click)="logout()">Logout</a>
+              </div>
+            </div>
+            <!-- signin -->
+            <a (click)="showcart()" class="widget-header mr-4 text-dark">
+              <div class="icon d-flex align-items-center">
+                <i class="feather-shopping-cart h6 mr-2 mb-0"></i>
+                <span>Cart</span>
+              </div>
+            </a>
+            <a
+              class="toggle hc-nav-trigger hc-nav-1"
+              role="button"
+              aria-controls="hc-nav-1"
+            >
+              <span></span>
+            </a>
+          </div>
+          <!-- widgets-wrap.// -->
+        </div>
+        <!-- col.// -->
+      </div>
+      <!-- row.// -->
+    </div>
+    <!-- container.// -->
+  </section>
+  <!-- header-main .// -->
+</header>

@@ -1,6 +1,21 @@
-.mat-dialog-container{
-    padding: 0;
+mat-dialog-container{
+    padding: 0 !important;
 }
 button{
     outline:none;
+}
+.modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+.h5, h5 {
+    font-size: 1.25rem;
+}
+.mt-4, .my-4 {
+    margin-top: 1.5rem!important;
+}
+
+.h6, h6 {
+    font-size: 1rem;
 }

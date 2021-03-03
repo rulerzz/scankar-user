@@ -1,6 +1,6 @@
 <div class="container" style="padding-bottom: 80px">
     <div class="py-5 row">
-      <div class="col-md-12 mb-3" *ngIf="orderType != 'Dine In'">
+      <div class="col-md-12 mb-3" *ngIf="orderType != 'Dine In' && orderType != 'Take Home'">
         <div>
           <div
             class="osahan-cart-item mb-3 rounded shadow-sm bg-white overflow-hidden"
@@ -34,6 +34,9 @@
                 <i class="feather-map-pin"></i> {{ user.address1 }},
                 {{ user.address2 }}, {{ user.city }} {{ user.zip }}
               </p>
+              <p class="mb-0 small text-muted">
+                <i class="feather-phone"></i> {{ user.mobileNumber }}
+              </p>
             </div>
           </div>
           <div class="bg-white py-2">
@@ -43,7 +46,7 @@
             >
               <div class="media align-items-center">
                 <div class="media-body">
-                  <p class="m-0" style="max-width: 120px;">{{ item.name }} ({{item.config.name ? item.config.name : "Initial"}})</p>
+                  <p class="m-0" style="max-width: 120px;">{{ item.name }} ({{getName(item)}})</p>
                 </div>
               </div>
               <div class="d-flex align-items-center">
@@ -62,16 +65,22 @@
             </div>
           </div>
           <div class="bg-white p-3 clearfix border-bottom">
-            <p class="mb-1">
+            <p *ngIf="cart.length > 0" class="mb-1">
               Item Total
               <span class="float-right text-dark"
                 ><i class="fa fa-inr"></i>{{ total }}</span
               >
             </p>
+            <p *ngIf="cart.length == 0" class="mb-1">
+              Cart is empty, Add an item to the cart to continue!
+            </p>
           </div>
-          <div class="p-3">
-            <a class="btn btn-success btn-block btn-lg" (click)="complete()"
+          <div class="p-3" *ngIf="cart.length > 0">
+            <a *ngIf="orderToEdit === null" class="btn btn-success btn-block btn-lg" (click)="complete()"
               >Place Order<i class="feather-arrow-right"></i
+            ></a>
+            <a *ngIf="orderToEdit !== null" class="btn btn-success btn-block btn-lg" (click)="update()"
+              >Update Order<i class="feather-arrow-right"></i
             ></a>
           </div>
         </div>

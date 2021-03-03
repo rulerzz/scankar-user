@@ -5,10 +5,19 @@
 <div class="trending-slider">
   <drag-scroll>
     <div drag-scroll-item class="panel image-card" *ngFor="let category of ruser.categories" (click)="showItems(category)">
-         <div class="list-card-body" style="background-image: url('{{category.image}}');background-size: cover;">
-            <h6 class="name">
+         <div class="list-card-body" *ngIf="category.image" style="background-image: url('{{category.image}}');background-size: cover;">
+          <div style="position: relative;">
+             <h6 class="name">
             {{ category.name }}
             </h6>
+          </div>  
+          </div>
+          <div class="list-card-body" *ngIf="!category.image" style="background-image: url('../../../assets/img/pet.jpg');background-size: cover;">
+          <div style="position: relative;">
+             <h6 class="name">
+            {{ category.name }}
+            </h6>
+          </div>  
           </div>
       </div>
   </drag-scroll>

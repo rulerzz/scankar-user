@@ -6,7 +6,7 @@ import { AuthComponent } from './auth.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
-
+import { NgOtpInputModule } from 'ng-otp-input';
 const routes: Routes = [
   {
     path: '',
@@ -34,9 +34,19 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AuthComponent, LoginComponent, ForgotPasswordComponent, RegisterComponent],
-  imports: [SharedModule, RouterModule.forChild(routes)],
+  declarations: [
+    AuthComponent,
+    LoginComponent,
+    ForgotPasswordComponent,
+    RegisterComponent,
+  ],
+  imports: [SharedModule, RouterModule.forChild(routes), NgOtpInputModule],
   providers: [AuthService],
-  exports: [AuthComponent, LoginComponent, ForgotPasswordComponent, RegisterComponent],
+  exports: [
+    AuthComponent,
+    LoginComponent,
+    ForgotPasswordComponent,
+    RegisterComponent,
+  ],
 })
 export class AuthModule {}

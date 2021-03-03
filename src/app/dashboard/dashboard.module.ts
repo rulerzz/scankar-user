@@ -18,6 +18,14 @@ import { CombosComponent } from './combos/combos.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NgxFlickingModule } from '@egjs/ngx-flicking';
 import { DragScrollModule } from 'ngx-drag-scroll';
+import { FooterComponent } from './footer/footer.component';
+import { MainfooterComponent } from './mainfooter/mainfooter.component';
+import { HeaderComponent } from './header/header.component';
+import { CallwaiterComponent } from './callwaiter/callwaiter.component';
+import { OrdersComponent } from './orders/orders.component';
+import { FaqComponent } from './faq/faq.component';
+import { HelpComponent } from './help/help.component';
+import { ConfirmdialogComponent } from './confirmdialog/confirmdialog.component';
 export function playerFactory() {
   return import(/* webpackChunkName: 'lottie-web' */ 'lottie-web');
 }
@@ -40,7 +48,23 @@ const routes: Routes = [
         component: ItemsComponent,
       },
       {
+        path: 'orders',
+        component: OrdersComponent,
+      },
+      {
+        path: 'faq',
+        component: FaqComponent,
+      },
+      {
+        path: 'help',
+        component: HelpComponent,
+      },
+      {
         path: 'cart',
+        component: CartComponent,
+      },
+      {
+        path: 'cart/:id',
         component: CartComponent,
       },
       {
@@ -68,6 +92,14 @@ const routes: Routes = [
     OffersComponent,
     CombosComponent,
     ProfileComponent,
+    FooterComponent,
+    MainfooterComponent,
+    HeaderComponent,
+    CallwaiterComponent,
+    OrdersComponent,
+    FaqComponent,
+    HelpComponent,
+    ConfirmdialogComponent
   ],
   providers: [DashboardService],
   imports: [

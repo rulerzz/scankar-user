@@ -1,0 +1,10 @@
+<div class="container">
+<h1 mat-dialog-title>Confirm</h1>
+<div mat-dialog-content>
+  <p>Editing an order removes any item that are present in the cart, do you want to continue editing?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button (click)="yes()" cdkFocusInitial>Yes</button>
+</div>
+</div>

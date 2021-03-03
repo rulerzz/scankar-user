@@ -1,0 +1,7 @@
+:host {
+  padding: 10px !important;
+}
+.mat-dialog-content{
+    margin : 0;
+    padding-left: 0;
+}

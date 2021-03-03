@@ -7,32 +7,44 @@ import { Subject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class DashboardService {
-  private usersubject = new Subject<boolean>();
-  bill: any;
-  category: any;
-  user: any;
-  ruser: any;
+  private user = new Subject<any>();
+  private menusubject = new Subject<any>();
+  private ruser = new Subject<any>();
+  private userupdatedsubject = new Subject<any>();
+  private cartsubject = new Subject<any>();
   constructor(private http: HttpClient) {}
-  setUser(user: any) {
-    this.user = user;
+  setuser(event: any) {
+    this.user.next(event);
   }
-  getUsers() {
-    return this.user;
+  get setuserevent$() {
+    return this.user.asObservable();
   }
-  setRuser(ruser: any) {
-    this.ruser = ruser;
+  setcart(event: any) {
+    this.cartsubject.next(event);
   }
-  getRuser() {
-    return this.ruser;
+  get setcartevent$() {
+    return this.cartsubject.asObservable();
+  }
+  setmenusubject(event: any) {
+    this.menusubject.next(event);
+  }
+  get setmenusubjectevent$() {
+    return this.menusubject.asObservable();
+  }
+  setuserupdated(event: any) {
+    this.userupdatedsubject.next(event);
+  }
+  get setuserupdatedevent$() {
+    return this.userupdatedsubject.asObservable();
+  }
+  setruser(event: any) {
+    this.ruser.next(event);
+  }
+  get setruserevent$() {
+    return this.ruser.asObservable();
   }
   setCart(cart: any) {
     localStorage.setItem('cart', JSON.stringify(cart));
-  }
-  getCategory() {
-    return this.category;
-  }
-  setCategory(category: any) {
-    this.category = category;
   }
   getCart() {
     let json = JSON.parse(localStorage.getItem('cart'));
@@ -94,13 +106,6 @@ export class DashboardService {
         observe: 'response',
       }
     );
-  }
-  update(event: any) {
-    this.usersubject.next(event);
-  }
-
-  get events$() {
-    return this.usersubject.asObservable();
   }
   uploadPfp(id: any, image: any): Observable<any> {
     const formData = new FormData();
@@ -230,16 +235,25 @@ export class DashboardService {
     return this.http.get<any>(
       config.serverUrl +
         'customer-order/searchitems/' +
-        localStorage.getItem('rid') + '/' + name,
+        localStorage.getItem('rid') +
+        '/' +
+        name,
       {
         observe: 'response',
       }
     );
   }
-  getCurrentBill() {
-    return this.bill;
+  sendping(rid: any, tableNo: any): Observable<any> {
+    return this.http.get<any>(
+      config.serverUrl + 'users/sendping/' + rid + '/' + tableNo,
+      {
+        observe: 'response',
+      }
+    );
   }
-  setCurrentBill(bill: any) {
-    this.bill = bill;
+  getOrderList(id: any) {
+    return this.http.get<any>(config.serverUrl + 'users/orders/' + id, {
+      observe: 'response',
+    });
   }
 }

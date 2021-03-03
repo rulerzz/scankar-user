@@ -1,18 +1,36 @@
 <div class="px-5 col-10 mx-auto">
                     <h2 class="text-dark my-0">Welcome Back</h2>
                     <p class="text-50">Sign in to continue</p>
-                    <form class="mt-5 mb-4" action="verification.html">
+                    <form *ngIf="loginflag" class="mt-5 mb-4" [formGroup]="userLoginForm" (ngSubmit)="login()">
                         <div class="form-group">
-                            <label for="exampleInputEmail1" class="text-dark">Email</label>
-                            <input type="email" placeholder="Enter Email" name="user" [formControl]="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <label for="exampleInputEmail1" class="text-dark">Email / Phone</label>
+                            <input type="text" placeholder="Enter Email / Phone" class="form-control" formControlName="userName" (input)="logValidationErrors()">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1" class="text-dark">Password</label>
-                            <input type="password" placeholder="Enter Password" name="password" [formControl]="password" class="form-control" id="exampleInputPassword1">
+                            <input type="password" placeholder="Enter Password"  class="form-control" formControlName="password" (input)="logValidationErrors()">
                         </div>
-                        <button class="btn btn-primary btn-lg btn-block" (click)="login()">SIGN IN</button>
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">SIGN IN</button>
                     </form>
-                    <a (click)="forget()" class="text-decoration-none">
+                    <form *ngIf="!loginflag" class="mt-5 mb-4" [formGroup]="userOtpForm" (ngSubmit)="loginbyotp()">
+                        <div class="form-group" *ngIf="!otpflag">
+                            <label for="exampleInputEmail1" class="text-dark">Phone</label>
+                            <input type="number" placeholder="Phone" class="form-control" formControlName="phone" (input)="logValidationErrors()">
+                        </div>
+                        <div class="form-group"*ngIf="otpflag" >
+                            <label for="exampleInputEmail1" class="text-dark">Enter OTP</label>
+                            <ng-otp-input (onInputChange)="onOtpChange($event)"  [config]="{length:6}"></ng-otp-input>
+                        </div>
+                        <button *ngIf="!otpflag" [disabled]="userOtpForm.invalid" class="btn btn-primary btn-lg btn-block" type="submit">Request OTP</button>
+                        <button *ngIf="otpflag" [disabled]="userOtpForm.invalid" class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                    </form>
+                    <a *ngIf="loginflag" (click)="loginfromphone()" class="text-decoration-none">
+                        <p class="text-center">Login through OTP</p>
+                    </a>
+                    <a *ngIf="!loginflag" (click)="loginfromphone()" class="text-decoration-none">
+                        <p class="text-center">Already have an account? Sign In</p>
+                    </a>
+                     <a (click)="forget()" class="text-decoration-none">
                         <p class="text-center">Forgot your password?</p>
                     </a>
                     <div class="d-flex align-items-center justify-content-center">

@@ -34,6 +34,7 @@
     "jquery": "^3.5.1",
     "jspdf": "^2.2.0",
     "lottie-web": "^5.7.5",
+    "ng-otp-input": "^1.7.1",
     "ngx-awesome-uploader": "^10.0.2",
     "ngx-device-detector": "^2.0.5",
     "ngx-drag-scroll": "^9.0.0-beta.4",

@@ -7,6 +7,8 @@ import { DashboardService } from './dashboard.service';
 import { NguCarouselConfig } from '@ngu/carousel';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BookComponent } from './book/book.component';
+import { AnimationItem } from 'lottie-web';
+import { AnimationOptions } from 'ngx-lottie';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -18,6 +20,12 @@ export class DashboardComponent implements OnInit {
   ruser: any;
   search: any;
   results: any;
+  mode = 'over';
+  backdrop = true;
+  opened: boolean;
+  links: any;
+  rid: string;
+  showanim: boolean;
   constructor(
     private route: ActivatedRoute,
     private dashboardservice: DashboardService,
@@ -25,28 +33,60 @@ export class DashboardComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router
   ) {
+    this.showanim = true;
     this.config = config;
     this.results = [];
-    this.dashboardservice.events$.forEach((event) => {
-      if (event) {
-        this.ngOnInit();
-      }
+    this.links = [
+      {
+        link: 'categories',
+        text: 'Home',
+        download: false,
+        icon: 'feather-list',
+      },
+      {
+        link: 'orders',
+        text: 'Orders',
+        download: false,
+        icon: 'feather-navigation',
+      },
+      {
+        link: 'profile',
+        text: 'Profile',
+        download: false,
+        icon: 'feather-user',
+      },
+      {
+        link: 'combos',
+        text: 'Combos',
+        download: false,
+        icon: 'feather-codepen',
+      },
+      {
+        link: 'cart',
+        text: 'Cart',
+        download: false,
+        icon: 'feather-shopping-cart',
+      },
+      {
+        link: 'offers',
+        text: 'Offers',
+        download: false,
+        icon: 'feather-cloud-snow',
+      },
+    ];
+    this.dashboardservice.setuserupdatedevent$.forEach((event) => {
+      this.ngOnInit();
     });
-    if (
-      localStorage.getItem('rid') === null ||
-      localStorage.getItem('rid') === undefined) {
-        localStorage.clear();
-        this.appservice.alerttop("Please scan again session expired!", "");
-        this.router.navigate(['login']);
-    }
   }
 
   ngOnInit(): void {
+    this.rid = localStorage.getItem('rid');
     this.appservice.load();
     this.dashboardservice.getUser(localStorage.getItem('id')).subscribe(
       (data) => {
         this.appservice.unload();
         this.user = data.body.data.user;
+        this.dashboardservice.setuser(this.user);
         localStorage.setItem('firstName', this.user.firstName);
       },
       (err) => {
@@ -54,21 +94,22 @@ export class DashboardComponent implements OnInit {
         this.appservice.alert('Could not fetch account data!', '');
       }
     );
-    this.showcategories();
+    if (this.rid !== null) {
+      this.showanim = false;
+      this.showcategories();
+    }
   }
-
+  options: AnimationOptions = {
+    path: '../../../assets/8531-qr.json',
+  };
+  animationCreated(animationItem: AnimationItem): void {
+    console.log(animationItem);
+  }
   showcategories() {
     this.router.navigate(['dashboard/categories']);
   }
   showitems() {
     this.router.navigate(['dashboard/items']);
-  }
-  showcart() {
-    this.router.navigate(['dashboard/cart']);
-  }
-  logout() {
-    localStorage.clear();
-    this.router.navigate(['']);
   }
   goHome() {
     this.router.navigate(['dashboard/categories']);
@@ -78,9 +119,6 @@ export class DashboardComponent implements OnInit {
   }
   showOffers() {
     this.router.navigate(['dashboard/offers']);
-  }
-  showProfile() {
-    this.router.navigate(['dashboard/profile']);
   }
   changed(search: any) {
     this.appservice.load();
@@ -98,10 +136,14 @@ export class DashboardComponent implements OnInit {
     const dialogRef = this.dialog.open(BookComponent, {
       width: '350px',
       data: {
-        item: item
+        item: item,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {});
+  }
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['']);
   }
 }

@@ -11,19 +11,45 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(data: any): Observable<any> {
-    return this.http.post<any>(config.serverUrl + 'login', data, {
+    return this.http.post<any>(config.serverUrl + 'userlogin', data, {
       observe: 'response',
     });
   }
   register(data: any): Observable<any> {
-    return this.http.post<any>(config.serverUrl + 'register', data, {
+    return this.http.post<any>(config.serverUrl + 'userregister', data, {
       observe: 'response',
     });
   }
-  getUser(){
+  sendotp(data: any): Observable<any> {
+    return this.http.post<any>(config.serverUrl + 'sendotp', data, {
+      observe: 'response',
+    });
+  }
+  checkuser(data: any): Observable<any> {
+    return this.http.post<any>(config.serverUrl + 'checkuser', data, {
+      observe: 'response',
+    });
+  }
+  getUser() {
     return this.user;
   }
-  setUser(user:any){
+  setUser(user: any) {
     this.user = user;
+  }
+  verifyotp(phone: any, otp: any) {
+    return this.http.get<any>(
+      'https://sms.smsmenow.in/validateOtpApi.jsp?mobileno=+91' +
+        phone +
+        '&otp=' +
+        otp,
+      {
+        observe: 'response',
+      }
+    );
+  }
+  otplogin(phone: any): Observable<any> {
+    return this.http.post<any>(config.serverUrl + 'otplogin', { phone : phone}, {
+      observe: 'response',
+    });
   }
 }

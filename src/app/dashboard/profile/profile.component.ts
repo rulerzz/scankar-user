@@ -69,7 +69,7 @@ export class ProfileComponent implements OnInit {
               .subscribe(
                 (data) => {
                   this.appservice.unload();
-                  this.dashboardservice.update(true);
+                  this.dashboardservice.setuserupdated(true);
                   this.appservice.alert('Successfully Updated!', '');
                 },
                 (err) => {
@@ -108,7 +108,7 @@ export class ProfileComponent implements OnInit {
         .subscribe(
           (data) => {
             this.appservice.unload();
-            this.dashboardservice.update(true);
+            this.dashboardservice.setuserupdated(true);
             this.appservice.alert('Successfully Updated!', '');
           },
           (err) => {

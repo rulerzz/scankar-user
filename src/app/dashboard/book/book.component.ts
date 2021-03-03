@@ -91,6 +91,7 @@ export class BookComponent implements OnInit {
 
       this.dashboardservice.addToCart(data);
       this.appservice.alerttop('Added item to cart!', '');
+      this.dashboardservice.setcart(true);
       this.close();
     }
   }
