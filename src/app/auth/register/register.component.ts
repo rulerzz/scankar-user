@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      //email: ['', [Validators.required]],
       phone: ['', [Validators.required]],
       password: ['', [Validators.required, CustomValidators.spaceValidator]],
     });
@@ -46,7 +46,7 @@ export class RegisterComponent implements OnInit {
     const apiData = {
       firstName: this.registerForm.value.firstName,
       lastName: this.registerForm.value.lastName,
-      email: this.registerForm.value.email,
+      //email: this.registerForm.value.email,
       mobileNumber: this.registerForm.value.phone,
       passwordConfirm: this.registerForm.value.password,
       password: this.registerForm.value.password,
@@ -63,13 +63,22 @@ export class RegisterComponent implements OnInit {
         },
         (err) => {
           console.log(err)
-          if (err.error.code.keyPattern.email == 1){
+          if (err.error.code?.keyPattern?.email == 1){
             this.appservice.alert('This email is in use!', '');
           }
-          else if (err.error.code.keyPattern.mobileNumber == 1) {
-              this.appservice.alert('This phone number is in use!', '');
-          }
-          else{
+          else if (err.error.code?.keyPattern?.mobileNumber == 1) {
+            this.appservice.alert('This phone number is in use!', '');
+          } 
+          else if (err.error.code?.errors?.password?.kind === 'minlength') {
+            this.appservice.alert(
+              'The password must be atleast 8 characters long!',
+              ''
+            );
+          } else if (err.error.code?.errors?.mobileNumber) {
+            this.appservice.alert('This phone number is invalid!', '');
+          } else if (err.error.code?.errors?.email?.kind === 'regexp') {
+            this.appservice.alert('This email is invalid!', '');
+          } else {
             this.appservice.alert('Unexpected error!', '');
           }
           this.appservice.unload();

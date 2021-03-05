@@ -29,25 +29,32 @@ export class AuthComponent implements OnInit {
   ) {
     this.config = config;
     this.route.params.subscribe((params) => {
-      console.log(params);
       if (params.id === "cart") {
         this.router.navigate(['cart']);
       } else {
         this.query = params.id;
         if (params.id !== undefined) {
           this.routedata = this.query.split('T');
-          this.userId = this.routedata[0];
-          if (this.routedata[1] == 'A') {
-            this.orderType = 'Take Home';
-          } else if (this.routedata[1] == 'L') {
-            this.orderType = 'Delivery';
-          } else {
-            this.orderType = 'Dine In';
-            this.tableNumber = this.routedata[1];
+          if(this.routedata.length < 2){
+            // THE PARAMS DOESNT MATCH PATTERN
+            console.log("INVALID QR DATA");
+            this.appservice.alert("Invalid QR, scan QR again!", "");
           }
-          localStorage.setItem('rid', this.userId);
-          localStorage.setItem('orderType', this.orderType);
-          localStorage.setItem('tableNo', this.tableNumber);
+          else{
+            // ALL GOOD
+            this.userId = this.routedata[0];
+            if (this.routedata[1] == 'A') {
+              this.orderType = 'Take Home';
+            } else if (this.routedata[1] == 'L') {
+              this.orderType = 'Delivery';
+            } else {
+              this.orderType = 'Dine In';
+              this.tableNumber = this.routedata[1];
+              localStorage.setItem('tableNo', this.tableNumber);
+            }
+            localStorage.setItem('rid', this.userId);
+            localStorage.setItem('orderType', this.orderType);
+          }
           this.router.navigate(['login']);
         }
       }

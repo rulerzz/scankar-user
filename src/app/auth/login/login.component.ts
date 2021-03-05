@@ -185,7 +185,6 @@ export class LoginComponent implements OnInit {
               this.appservice.alert('Logged In! 🙋', '');
               localStorage.setItem('token', data.body.token);
               localStorage.setItem('role', data.body.user[0].role);
-              localStorage.setItem('email', data.body.user[0].email);
               localStorage.setItem('id', data.body.user[0]._id);
               localStorage.setItem('time', date.toJSON());
               this.router.navigate(['dashboard']);

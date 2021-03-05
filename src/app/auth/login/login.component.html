@@ -22,16 +22,12 @@
                             <ng-otp-input (onInputChange)="onOtpChange($event)"  [config]="{length:6}"></ng-otp-input>
                         </div>
                         <button *ngIf="!otpflag" [disabled]="userOtpForm.invalid" class="btn btn-primary btn-lg btn-block" type="submit">Request OTP</button>
-                        <button *ngIf="otpflag" [disabled]="userOtpForm.invalid" class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
                     </form>
                     <a *ngIf="loginflag" (click)="loginfromphone()" class="text-decoration-none">
                         <p class="text-center">Login through OTP</p>
                     </a>
                     <a *ngIf="!loginflag" (click)="loginfromphone()" class="text-decoration-none">
                         <p class="text-center">Already have an account? Sign In</p>
-                    </a>
-                     <a (click)="forget()" class="text-decoration-none">
-                        <p class="text-center">Forgot your password?</p>
                     </a>
                     <div class="d-flex align-items-center justify-content-center">
                         <a (click)="signup()" >

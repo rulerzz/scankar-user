@@ -2,7 +2,11 @@
     margin-right:10px;
     color: #fff;
 }
-.ml-auto{
+.fl-auto{
     margin-right: auto !important;
         margin-left: 0 !important;
+}
+.img-fluid{
+    max-width: 50px;
+    max-height: 50px;
 }

@@ -24,18 +24,29 @@
             class="d-flex border-bottom osahan-cart-item-profile bg-white p-3"
           >
             <img
+            *ngIf="user?.photo"
               [src]="user.photo"
               style="max-width: 65px;max-height:65px"
               class="mr-3 rounded-circle img-fluid"
             />
+            <img
+            *ngIf="!user?.photo"
+              src="../../assets/img/default.jpg"
+              style="max-width: 65px;max-height:65px"
+              class="mr-3 rounded-circle img-fluid"
+            />
             <div class="d-flex flex-column">
-              <h6 class="mb-1 font-weight-bold">{{ user.companyName }}</h6>
-              <p class="mb-0 small text-muted">
-                <i class="feather-map-pin"></i> {{ user.address1 }},
-                {{ user.address2 }}, {{ user.city }} {{ user.zip }}
+              <h6 class="mb-1 font-weight-bold">{{ user?.companyName }}</h6>
+              <p class="mb-0 small text-muted" *ngIf="user?.address1">
+                <i class="feather-map-pin"></i> {{ user?.address1 }},
+                {{ user?.address2 }}, {{ user?.city }} {{ user?.zip }}
+              </p>
+              <p class="mb-0 small text-muted" *ngIf="!user?.address1">
+                <i class="feather-map-pin"></i>
+                  Address not available!
               </p>
               <p class="mb-0 small text-muted">
-                <i class="feather-phone"></i> {{ user.mobileNumber }}
+                <i class="feather-phone"></i> {{ user?.mobileNumber }}
               </p>
             </div>
           </div>
