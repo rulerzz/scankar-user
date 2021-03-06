@@ -25,7 +25,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['dashboard/profile']);
   }
   logout() {
-    localStorage.clear();
+     localStorage.removeItem('token');
+     localStorage.removeItem('role');
+     localStorage.removeItem('id');
+     localStorage.removeItem('time');
     this.router.navigate(['']);
   }
   showcart() {

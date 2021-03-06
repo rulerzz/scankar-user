@@ -143,7 +143,10 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {});
   }
   logout() {
-    localStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem('id');
+    localStorage.removeItem('time');
     this.router.navigate(['']);
   }
 }
