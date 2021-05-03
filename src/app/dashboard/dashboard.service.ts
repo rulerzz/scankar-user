@@ -256,4 +256,20 @@ export class DashboardService {
       observe: 'response',
     });
   }
+  bestselling(id: any): Observable<any> {
+    return this.http.get<any>(
+      config.serverUrl + 'customer-order/allbestsellingitems/' + id,
+      {
+        observe: 'response',
+      }
+    );
+  }
+  offers(id: any): Observable<any> {
+    return this.http.get<any>(
+      config.serverUrl + 'customer-order/alloffers/' + id,
+      {
+        observe: 'response',
+      }
+    );
+  }
 }

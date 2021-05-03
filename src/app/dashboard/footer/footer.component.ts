@@ -20,7 +20,7 @@ export class FooterComponent implements OnInit {
     this.router.navigate(['dashboard/combos']);
   }
   showOffers() {
-    this.router.navigate(['dashboard/offers']);
+    this.router.navigate(['dashboard/offer']);
   }
   showProfile() {
     this.router.navigate(['dashboard/profile']);

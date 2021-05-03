@@ -47,8 +47,8 @@ export class AuthService {
       }
     );
   }
-  otplogin(phone: any): Observable<any> {
-    return this.http.post<any>(config.serverUrl + 'otplogin', { phone : phone}, {
+  otplogin(name:any,phone: any): Observable<any> {
+    return this.http.post<any>(config.serverUrl + 'otplogin', { phone : phone , name : name}, {
       observe: 'response',
     });
   }

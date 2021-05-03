@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit {
         icon: 'feather-shopping-cart',
       },
       {
-        link: 'offers',
+        link: 'offer',
         text: 'Offers',
         download: false,
         icon: 'feather-cloud-snow',

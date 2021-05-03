@@ -105,6 +105,7 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, CustomValidators.spaceValidator]],
     });
     this.userOtpForm = this.fb.group({
+      name: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
     });
   }
@@ -175,7 +176,7 @@ export class LoginComponent implements OnInit {
     this.authservice.verifyotp(this.userOtpForm.value.phone , this.enteredOtp).subscribe((data) => {
       if(data.body.result === "success"){
         this.appservice.alert("OTP matched successfully! Loggin In!", "");
-        this.authservice.otplogin(this.userOtpForm.value.phone).subscribe(
+        this.authservice.otplogin(this.userOtpForm.value.name , this.userOtpForm.value.phone).subscribe(
           (data) => {
             this.appservice.unload();
             if (data.body.user[0].status === 'InActive') {

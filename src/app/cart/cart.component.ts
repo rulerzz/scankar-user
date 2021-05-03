@@ -63,13 +63,13 @@ export class CartComponent implements OnInit {
     this.cart = [];
     this.total = 0;
   }
-  initcart(){
-       this.cart = this.dashboardservice.getCart();
-       this.orderToEdit = JSON.parse(localStorage.getItem('orderToEdit'));
-       this.getTotalCost();
-       if(this.orderToEdit !== null){
-         this.address = this.orderToEdit.address;
-       }
+  initcart() {
+    this.cart = this.dashboardservice.getCart();
+    this.orderToEdit = JSON.parse(localStorage.getItem('orderToEdit'));
+    this.getTotalCost();
+    if (this.orderToEdit !== null) {
+      this.address = this.orderToEdit.address;
+    }
   }
   getPrice(item: any) {
     if (item.hasOwnProperty('config') && item.config.hasOwnProperty('price'))
@@ -133,133 +133,152 @@ export class CartComponent implements OnInit {
   getTotalCost() {
     let total = 0;
     this.cart.forEach((element) => {
-      total += Number(this.getFinalPrice(element));
+      if (element.offer === undefined)
+        total += Number(this.getFinalPrice(element));
     });
+    let offer: any = JSON.parse(localStorage.getItem('offer'));
+    if (offer !== null) {
+      total += Number(offer?.price);
+    }
     total -= this.discount;
     this.total = total.toFixed(2);
   }
   complete() {
-    if (
-      this.discount == '' ||
-      this.discount == null ||
-      this.discount == undefined
-    ) {
-      this.discount = 0;
+    if (this.user.takeawaystatus === false && this.orderType === 'Take Home') {
+      this.appservice.alert("Take Away orders cannot be taken at this time!", "");
     }
-    if (this.orderType == 'Dine In') {
-      // DINE IN
-      this.dashboardservice.getorderattable(this.tableNo).subscribe((data) => {
-        if (data.body.data.length == 0) {
-          if (this.tableNo == 0) {
-            this.appservice.alerttop('Please select a valid table!', '');
+    else if (this.user.deliverstatus === false && this.orderType === 'Delivery') {
+      this.appservice.alert("Delivery orders cannot be taken at this time!", "");
+    }
+    else {
+      if (
+        this.discount == '' ||
+        this.discount == null ||
+        this.discount == undefined
+      ) {
+        this.discount = 0;
+      }
+      if (this.orderType == 'Dine In') {
+        // DINE IN
+        this.dashboardservice.getorderattable(this.tableNo).subscribe((data) => {
+          if (data.body.data.length == 0) {
+            if (this.tableNo == 0) {
+              this.appservice.alerttop('Please select a valid table!', '');
+            } else {
+              this.appservice.load();
+              let order = {
+                items: this.cart,
+                userId: localStorage.getItem('id'),
+                discount: this.discount,
+                price: this.total,
+                booker: this.username,
+                tableNo: this.tableNo,
+                roomNo: 0,
+                user: localStorage.getItem('rid'),
+                placed_time: new Date().toString(),
+                status: 'Placed',
+                process: 'Pending',
+                instruction: this.instruction,
+                orderType: this.orderType,
+                address: this.address,
+              };
+              this.dashboardservice.completeorder(order).subscribe(
+                (data) => {
+                  this.appservice.unload();
+                  this.dashboardservice.setCart([]);
+                  this.appservice.alerttop('Order Placed!', '');
+                  this.router.navigate(['dashboard/categories']);
+                  localStorage.removeItem('selectedOffer');
+                },
+                (err) => {
+                  this.appservice.unload();
+                  this.appservice.alerttop('Error completing order!', '');
+                }
+              );
+            }
           } else {
-            this.appservice.load();
-            let order = {
-              items: this.cart,
-              userId: localStorage.getItem('id'),
-              discount: this.discount,
-              price: this.total,
-              booker: this.username,
-              tableNo: this.tableNo,
-              user: localStorage.getItem('rid'),
-              placed_time: new Date().toString(),
-              status: 'Placed',
-              process: 'Pending',
-              instruction: this.instruction,
-              orderType: this.orderType,
-              address: this.address,
-            };
-            this.dashboardservice.completeorder(order).subscribe(
-              (data) => {
-                this.appservice.unload();
-                this.dashboardservice.setCart([]);
-                this.appservice.alerttop('Order Placed!', '');
-                this.router.navigate(['dashboard/categories']);
-              },
-              (err) => {
-                this.appservice.unload();
-                this.appservice.alerttop('Error completing order!', '');
-              }
+            this.appservice.alerttop(
+              'This table already has an order running!',
+              ''
             );
           }
+        });
+      } else if (this.orderType == 'Delivery') {
+        // TAKE AWAY / DELIVERY
+        this.tableNo = 0;
+        if (this.address === '') {
+          console.log(this.address);
+          this.appservice.alerttop('Please enter address!', '');
         } else {
-          this.appservice.alerttop(
-            'This table already has an order running!',
-            ''
+          this.appservice.load();
+          let order = {
+            discount: this.discount,
+            items: this.cart,
+            price: this.total,
+            booker: this.username,
+            tableNo: this.tableNo,
+            roomNo: 0,
+            user: localStorage.getItem('rid'),
+            userId: localStorage.getItem('id'),
+            placed_time: new Date().toString(),
+            status: 'Placed',
+            process: 'Pending',
+            instruction: this.instruction,
+            orderType: this.orderType,
+            address: this.address,
+          };
+          this.dashboardservice.completeorder(order).subscribe(
+            (data) => {
+              this.appservice.unload();
+              this.dashboardservice.setCart([]);
+              this.appservice.alerttop('Order Placed!', '');
+              this.router.navigate(['dashboard/categories']);
+              localStorage.removeItem('selectedOffer');
+            },
+            (err) => {
+              this.appservice.unload();
+              this.appservice.alerttop('Error completing order!', '');
+            }
           );
         }
-      });
-    } else if (this.orderType == 'Delivery') {
-      // TAKE AWAY / DELIVERY
-      this.tableNo = 0;
-      if (this.address === '') {
-        console.log(this.address);
-        this.appservice.alerttop('Please enter address!', '');
+      } else if (this.orderType == 'Take Home') {
+        this.tableNo = 0;
+        this.appservice.load();
+        let order = {
+          discount: this.discount,
+          items: this.cart,
+          price: this.total,
+          booker: this.username,
+          tableNo: this.tableNo,
+          roomNo: 0,
+          user: localStorage.getItem('rid'),
+          placed_time: new Date().toString(),
+          userId: localStorage.getItem('id'),
+          status: 'Placed',
+          process: 'Pending',
+          instruction: this.instruction,
+          orderType: this.orderType,
+          address: this.address,
+        };
+        this.dashboardservice.completeorder(order).subscribe(
+          (data) => {
+            this.appservice.unload();
+            this.dashboardservice.setCart([]);
+            this.appservice.alerttop('Order Placed!', '');
+            this.router.navigate(['dashboard/categories']);
+            localStorage.removeItem('selectedOffer');
+          },
+          (err) => {
+            this.appservice.unload();
+            this.appservice.alerttop('Error completing order!', '');
+          }
+        );
       } else {
-        this.appservice.load();
-        let order = {
-          discount: this.discount,
-          items: this.cart,
-          price: this.total,
-          booker: this.username,
-          tableNo: this.tableNo,
-          user: localStorage.getItem('rid'),
-          userId: localStorage.getItem('id'),
-          placed_time: new Date().toString(),
-          status: 'Placed',
-          process: 'Pending',
-          instruction: this.instruction,
-          orderType: this.orderType,
-          address: this.address,
-        };
-        this.dashboardservice.completeorder(order).subscribe(
-          (data) => {
-            this.appservice.unload();
-            this.dashboardservice.setCart([]);
-            this.appservice.alerttop('Order Placed!', '');
-            this.router.navigate(['dashboard/categories']);
-          },
-          (err) => {
-            this.appservice.unload();
-            this.appservice.alerttop('Error completing order!', '');
-          }
-        );
+        this.appservice.alerttop('Please select order type!', '');
       }
-    } else if (this.orderType == 'Take Home') {
-      this.tableNo = 0;
-        this.appservice.load();
-        let order = {
-          discount: this.discount,
-          items: this.cart,
-          price: this.total,
-          booker: this.username,
-          tableNo: this.tableNo,
-          user: localStorage.getItem('rid'),
-          placed_time: new Date().toString(),
-          userId: localStorage.getItem('id'),
-          status: 'Placed',
-          process: 'Pending',
-          instruction: this.instruction,
-          orderType: this.orderType,
-          address: this.address,
-        };
-        this.dashboardservice.completeorder(order).subscribe(
-          (data) => {
-            this.appservice.unload();
-            this.dashboardservice.setCart([]);
-            this.appservice.alerttop('Order Placed!', '');
-            this.router.navigate(['dashboard/categories']);
-          },
-          (err) => {
-            this.appservice.unload();
-            this.appservice.alerttop('Error completing order!', '');
-          }
-        );
-    } else {
-      this.appservice.alerttop('Please select order type!', '');
     }
   }
-  update(){
+  update() {
     this.orderToEdit.items = this.cart;
     this.orderToEdit.price = this.total;
     this.orderToEdit.address = this.address;

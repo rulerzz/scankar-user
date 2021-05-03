@@ -26,6 +26,7 @@ import { OrdersComponent } from './orders/orders.component';
 import { FaqComponent } from './faq/faq.component';
 import { HelpComponent } from './help/help.component';
 import { ConfirmdialogComponent } from './confirmdialog/confirmdialog.component';
+import { OfferComponent } from './offer/offer.component';
 export function playerFactory() {
   return import(/* webpackChunkName: 'lottie-web' */ 'lottie-web');
 }
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'items',
         component: ItemsComponent,
+      },
+      {
+        path: 'offer',
+        component: OfferComponent,
       },
       {
         path: 'orders',
@@ -99,7 +104,8 @@ const routes: Routes = [
     OrdersComponent,
     FaqComponent,
     HelpComponent,
-    ConfirmdialogComponent
+    ConfirmdialogComponent,
+    OfferComponent
   ],
   providers: [DashboardService],
   imports: [

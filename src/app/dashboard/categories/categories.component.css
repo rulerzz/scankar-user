@@ -42,3 +42,6 @@ button{
 h5{
   font-size: 1.2rem;
 }
+.trending-slider:last-child {
+  margin-bottom: 80px;
+}

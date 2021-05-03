@@ -65,6 +65,44 @@
   </button>
  
 </overflow-carousel -->
+<h5 class="m-0" *ngIf="bestselling.length > 0" style="margin: 20px 0 0px 0 !important;">Browse Bestselling Items</h5>
+<drag-scroll *ngIf="bestselling.length > 0" style="margin: 20px 0 0px 0 !important;">
+  <div drag-scroll-item class="panel image-card" *ngFor="let item of bestselling" (click)="addItem(item)">
+       <div class="list-card-body" *ngIf="item.image" style="background-image: url('{{item.image}}');background-size: cover;">
+        <div style="position: relative;">
+           <h6 class="name">
+          {{ item.name }}
+          </h6>
+        </div>  
+        </div>
+        <div class="list-card-body" *ngIf="!item.image" style="background-image: url('../../../assets/img/pet.jpg');background-size: cover;">
+        <div style="position: relative;">
+           <h6 class="name">
+          {{ item.name }}
+          </h6>
+        </div>  
+        </div>
+    </div>
+</drag-scroll>
+<h5 class="m-0" *ngIf="offers.length > 0" style="margin: 20px 0 0px 0 !important;">Browse Offers</h5>
+<drag-scroll *ngIf="offers.length > 0" style="margin: 20px 0 0px 0 !important;">
+  <div drag-scroll-item class="panel image-card" *ngFor="let offer of offers" (click)="showOffer(offer)">
+       <div class="list-card-body" *ngIf="offer.image" style="background-image: url('{{offer.image}}');background-size: cover;">
+        <div style="position: relative;">
+           <h6 class="name">
+          {{ offer.name }}
+          </h6>
+        </div>  
+        </div>
+        <div class="list-card-body" *ngIf="!offer.image" style="background-image: url('../../../assets/img/pet.jpg');background-size: cover;">
+        <div style="position: relative;">
+           <h6 class="name">
+          {{ offer.name }}
+          </h6>
+        </div>  
+        </div>
+    </div>
+</drag-scroll>
  <ng-lottie *ngIf="show" height="500" width="100%" [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
   <!--<div class="container holder">
     <div

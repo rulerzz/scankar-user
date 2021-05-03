@@ -34,7 +34,6 @@
     width: 250px;}
 .mat-drawer-container{
     overflow: hidden;
-    height:100vh;
     z-index: 0;}
 #main-nav{
     display: block;
